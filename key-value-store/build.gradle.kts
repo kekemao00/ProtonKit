@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "me.kekemao.keyvaluevault"
+    namespace = "me.kekemao.keyvaluestore"
     compileSdk = 34
 
     defaultConfig {

@@ -1,6 +1,7 @@
 plugins {
-    alias(libs.plugins.android.application)
+    alias(libs.plugins.android.library)
     alias(libs.plugins.jetbrains.kotlin.android)
+    alias(libs.plugins.compose.compiler)
 }
 
 android {
@@ -8,15 +9,12 @@ android {
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "me.kekemao.base_compose"
         minSdk = 25
-        targetSdk = 34
-        versionCode = 1
-        versionName = "1.0"
-
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
-
+    buildFeatures {
+        compose = true
+    }
     buildTypes {
         release {
             isMinifyEnabled = false
@@ -72,7 +70,7 @@ dependencies {
 //    api(libs.androidx.material3.window.size)
 
 //    // Optional - Integration with activities
-//    api(libs.androidx.activity.compose)
+    api(libs.androidx.activity.compose)
 //    // Optional - Integration with ViewModels
 //    api(libs.androidx.lifecycle.viewmodel.compose)
 //    // Optional - Integration with LiveData

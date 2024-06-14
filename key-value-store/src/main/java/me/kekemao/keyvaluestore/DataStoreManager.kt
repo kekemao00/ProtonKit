@@ -1,4 +1,4 @@
-package me.kekemao.keyvaluevault
+package me.kekemao.keyvaluestore
 
 import android.content.Context
 import android.util.Log
