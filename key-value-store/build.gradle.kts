@@ -33,14 +33,7 @@ android {
 }
 
 dependencies {
-
-    implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.appcompat)
-    implementation(libs.material)
     implementation(project(":base"))
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
     // Preferences DataStore (SharedPreferences like APIs)
     // https://developer.android.com/topic/libraries/architecture/datastore?hl=zh-cn
     // https://developer.android.com/codelabs/basic-android-kotlin-training-preferences-datastore?hl=zh_cn#2

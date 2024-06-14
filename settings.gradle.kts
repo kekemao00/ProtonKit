@@ -22,4 +22,5 @@ dependencyResolutionManagement {
 rootProject.name = "ProtonKit"
 include(":app")
 include(":base")
-include(":key-value-vault")
+include(":key-value-store")
+include(":base-compose")
