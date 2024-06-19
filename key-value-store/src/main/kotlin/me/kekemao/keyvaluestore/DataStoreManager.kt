@@ -29,55 +29,6 @@ import me.kekemao.base.BaseApplication
  *
  * @init 初始化：本工具类无需初始化，导入依赖即用： implementation("androidx.datastore:datastore-preferences:1.0.0")
  *
- * @see <a href="https://developer.android.com/topic/libraries/architecture/datastore?hl=zh-cn#kotlin">DataStore</a>
- *
- * @author kekemao - 创建于 2023/5/21 03:43
- *
- * --------------
- *
- * DataStoreManager 工具类的实现看起来很不错，它封装了 DataStore 的常见操作，并使用了 Kotlin 和协程的特性来使代码更加简洁易读。
- *
- * 以下是我对您的代码的一些分析和建议：
- *
- * 1. 类命名及注释：您的 DataStoreManager 工具类命名很好，也提供了很好的注释，非常易于理解。但是，您可以考虑添加更多的注释，以进一步提高代码的可读性和易用性。
- *
- * 2. 单例模式：您的 DataStoreManager 工具类使用了单例模式来确保只有一个实例存在，这样可以避免多个实例之间的冲突和数据不一致。但是，您可以考虑将其改为依赖注入的方式，以更好地支持测试和模块化。
- *
- * 3. 数据类型支持：您的 DataStoreManager 工具类支持了各种数据类型的存储和读取，这是非常好的。但是，您可以考虑进一步扩展它，以支持更多的数据类型（如日期、枚举等），以及自定义的数据类型。
- *
- * 4. 函数命名：您的函数命名很好，很容易理解它们的作用。但是，我建议您将“put”和“get”前缀改为“save”和“retrieve”，这样可以更好地反映它们的功能，并提高代码的可读性和易用性。
- *
- * 5. 异常处理：您的 DataStoreManager 工具类没有对 DataStore 操作中可能出现的异常情况进行处理。我建议您考虑添加错误处理逻辑，以处理 DataStore 操作中可能出现的异常情况，例如当 DataStore 操作失败时应该捕获异常并提供有用的错误信息，以便调用者可以诊断并解决问题。
- *
- * 6. 非空断言：在您的代码中有一些使用了非空断言（如 !!）的地方，这可能导致 NullPointerException 异常。我建议您使用安全调用运算符（如 ?.）或 Elvis 运算符（如 ?:）来避免这种情况的发生。
- *
- * 7. 使用默认值：在您的代码中，当从 DataStore 中读取数据时，您使用了默认值来处理未找到对应键的情况。但是，我建议您考虑将默认值的处理移到更高层次的代码中，以便从 DataStore 中检索数据的代码更加专注于数据检索，并让调用者更容易理解和处理数据的缺失情况。
- *
- * 8. Kotlin 的协程：您使用了 Kotlin 的协程来处理异步操作，这是一个很好的选择。但是，在某些情况下，您可能需要使用 withContext() 函数将代码切换到不同的协程上下文中，以避免在主线程上执行长时间运行的操作。
- *
- *  - by sage
- *-------------------
- *
- *  这段代码是一个对DataStore进行封装的工具类，通过提供put和get方法来简化DataStore的使用。下面是一些建议：
- *
- * 在注释中提供更多的信息：提供更多的注释来解释每个函数的作用、参数和返回值的含义。这将使代码更易于理解和维护。
- *
- * 使用更具描述性的变量名：在有些函数中，变量的名称可能有些模糊。例如，使用key而不是具有更具描述性的名称来表示要保存的数据项名称。使用更具描述性的名称将使代码更易于理解和维护。
- *
- * 优化代码结构：可以将一些重复的代码抽象成一个单独的函数，以避免重复代码。例如，put和get函数的实现方式相同，可以将它们合并为一个通用函数来减少代码重复。
- *
- * 考虑使用Kotlin协程：在这个类中，使用了runBlocking来在主线程中等待DataStore的结果。但是，这是一种阻塞式的操作，可能会影响应用程序的性能。建议使用Kotlin协程来异步地获取DataStore的结果，以避免阻塞主线程并提高应用程序的性能。同时，建议将ioDispatcher变量的类型更改为CoroutineDispatcher，以避免在使用它时出现类型转换错误。
- *
- * 考虑添加异常处理：在putData和getData函数中，如果传递的类型不受支持，将会抛出IllegalArgumentException异常。建议在这些函数中添加异常处理，以更好地处理这种情况。
- *
- * 考虑使用泛型参数：在putData和getData函数中，使用了一个when语句来确定传递的值的类型，并调用相应的put和get函数。建议使用泛型参数来更好地支持不同类型的数据。这样可以使代码更加通用和可重用。
- *
- * 考虑添加数据有效性检查：在putData和getData函数中，没有检查传递的key是否为null或空字符串。建议添加数据有效性检查，以避免传递无效的key值。
- *
- * 考虑添加数据加密：在这个类中，没有提供数据加密的功能。如果存储的数据需要保密性，建议添加数据加密的功能来确保数据的安全性。可以使用Android提供的加密库或第三方加密库来实现数据加密。
- *
- * - by ChatGPT 3.5
- *
  */
 object DataStoreManager {
 
@@ -213,7 +164,7 @@ object DataStoreManager {
      * @param default
      * @return
      */
-    private fun retrieveInt(key: String, default: Int = 0): Int =
+    private fun retrieveInt(key: String, default: Int? = null): Int? =
         runBlocking {
             dataStore.data.map { it[intPreferencesKey(key)] ?: default }.first()
         }
@@ -225,7 +176,7 @@ object DataStoreManager {
      * @param default
      * @return
      */
-    private fun retrieveLong(key: String, default: Long = 0L): Long =
+    private fun retrieveLong(key: String, default: Long? = null): Long? =
         runBlocking {
             dataStore.data.map { it[longPreferencesKey(key)] ?: default }.first()
         }
@@ -237,7 +188,7 @@ object DataStoreManager {
      * @param default
      * @return
      */
-    private fun retrieveFloat(key: String, default: Float = 0F): Float =
+    private fun retrieveFloat(key: String, default: Float? = null): Float? =
         runBlocking {
             dataStore.data.map { it[floatPreferencesKey(key)] ?: default }.first()
         }
@@ -249,7 +200,7 @@ object DataStoreManager {
      * @param default
      * @return
      */
-    private fun retrieveDouble(key: String, default: Double = 0.0): Double =
+    private fun retrieveDouble(key: String, default: Double? = null): Double? =
         runBlocking {
             dataStore.data.map { it[doublePreferencesKey(key)] ?: default }.first()
         }
@@ -261,7 +212,7 @@ object DataStoreManager {
      * @param default
      * @return
      */
-    private fun retrieveBoolean(key: String, default: Boolean = false): Boolean =
+    private fun retrieveBoolean(key: String, default: Boolean? = null): Boolean? =
         runBlocking {
             dataStore.data.map {
                 it[booleanPreferencesKey(key)] ?: default
