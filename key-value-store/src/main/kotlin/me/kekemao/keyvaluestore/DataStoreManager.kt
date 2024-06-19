@@ -65,7 +65,7 @@ data class DataStoreManager(
      * @param key 保存的 key  @see [SP_KEY_MESSAGE]
      * @param value 保存的数据 (String, Set<String>, Int, Long, Float, Double, Boolean)
      */
-    suspend fun <T> save(key: String, value: T) {
+    suspend fun <T : Any> save(key: String, value: T) {
         Log.v(TAG, "save: Storing locally: $key=$value")
         withContext(ioDispatcher) {
             dataStore.edit { preferences ->
@@ -90,7 +90,7 @@ data class DataStoreManager(
      * @param defaultValue 默认值 (String, Set<String>, Int, Long, Float, Double, Boolean)
      */
     @Suppress("IMPLICIT_CAST_TO_ANY", "UNCHECKED_CAST")
-    fun <T> retrieve(key: String, defaultValue: T): T {
+    fun <T : Any> retrieve(key: String, defaultValue: T): T {
         Log.v(TAG, "retrieve: Reading local cache: $key")
         return runBlocking {
             dataStore.data.catch {
