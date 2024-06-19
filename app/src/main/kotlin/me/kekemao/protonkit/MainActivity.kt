@@ -19,7 +19,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
-import kotlinx.coroutines.runBlocking
 import me.kekemao.base_compose.modifier.debouncedClickable
 import me.kekemao.keyvaluestore.DataStoreManager
 import me.kekemao.keyvaluestore.DataStoreManager.Companion.SP_KEY_MESSAGE
@@ -53,8 +52,8 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
 
     LaunchedEffect(Unit) {
         dataStore = DataStoreManager(context)
-        dataStore?.save(SP_KEY_MESSAGE, "Hello, DataStoreManager${System.currentTimeMillis()}")
-        msg.value = runBlocking { dataStore?.retrieve(SP_KEY_MESSAGE, "NULL")?:"NULL" }
+        dataStore!!.save(SP_KEY_MESSAGE, "Hello, DataStoreManager${System.currentTimeMillis()}")
+        msg.value = dataStore!!.retrieve(SP_KEY_MESSAGE, "SSS")
     }
 
     Column {
