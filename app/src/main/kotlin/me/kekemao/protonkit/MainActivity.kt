@@ -5,10 +5,11 @@ import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Button
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -17,6 +18,7 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import me.kekemao.base_compose.modifier.debouncedClickable
@@ -62,12 +64,20 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
             text = "${msg.value}!", modifier = modifier
         )
 
-        Button(onClick = { ++num.intValue }, Modifier.debouncedClickable {
-            ++num1.intValue
-            Toast.makeText(
-                context, "Button clicked", Toast.LENGTH_SHORT
-            ).show()
-        }) {
+        Row(Modifier
+            .pointerInput(Unit) {
+               detectTapGestures {
+
+               }
+            }
+            .debouncedClickable {
+                ++num1.intValue
+                Toast
+                    .makeText(
+                        context, "Button clicked", Toast.LENGTH_SHORT
+                    )
+                    .show()
+            }) {
             Text("Click Me ${num1.intValue}, ${num.intValue}")
         }
 
