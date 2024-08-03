@@ -53,8 +53,8 @@ android {
 dependencies {
     // Choose one of the following:
     // compose
-    implementation(project(":key-value-store"))
-    implementation(project(":base-compose"))
+    api(project(":key-value-store"))
+    api(project(":base-compose"))
     // Use only basic components
-    implementation(project(":base"))
+    api(project(":base"))
 }
