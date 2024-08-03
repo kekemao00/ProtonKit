@@ -27,7 +27,7 @@ import kotlinx.coroutines.withContext
  * @init 初始化：本工具类无需初始化，导入依赖即用： implementation("androidx.datastore:datastore-preferences:1.0.0")
  *
  */
-data class DataStoreManager(
+class DataStoreManager(
     private val context: Context, private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 ) {
 
