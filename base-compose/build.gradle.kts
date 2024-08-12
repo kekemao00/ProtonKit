@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.compose.compiler)
 }
+group = "com.kekemao00.protonkit.base-compose"
 
 android {
     namespace = "me.kekemao.base_compose"
