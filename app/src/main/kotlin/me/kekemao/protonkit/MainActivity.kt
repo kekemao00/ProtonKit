@@ -1,6 +1,7 @@
 package me.kekemao.protonkit
 
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -21,6 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
+import getBuildInfo
 import me.kekemao.base_compose.modifier.debouncedClickable
 import me.kekemao.keyvaluestore.DataStoreManager
 import me.kekemao.keyvaluestore.DataStoreManager.Companion.SP_KEY_MESSAGE
@@ -30,6 +32,11 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        val buildInfo = getBuildInfo()
+        for ((key, value) in buildInfo) {
+            Log.i("TAG", "$key : $value")
+        }
+
         setContent {
             ProtonKitTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
@@ -66,9 +73,9 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
 
         Row(Modifier
             .pointerInput(Unit) {
-               detectTapGestures {
+                detectTapGestures {
 
-               }
+                }
             }
             .debouncedClickable {
                 ++num1.intValue
