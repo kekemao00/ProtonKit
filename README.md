@@ -1,4 +1,8 @@
 # ProtonKit
+![Lines of code](https://img.shields.io/tokei/lines/github.com/kekemao00/ProtonKit)
+![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/kekemao00/ProtonKit)
+![GitHub last commit](https://img.shields.io/github/last-commit/kekemao00/ProtonKit)
+[![](https://jitpack.io/v/io.jitpack/gradle-simple.svg)](https://jitpack.io/#io.jitpack/gradle-simple)
 
 1. 添加 key-value-vault 依赖
 

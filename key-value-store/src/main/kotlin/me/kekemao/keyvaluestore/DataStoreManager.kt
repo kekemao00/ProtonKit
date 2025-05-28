@@ -5,7 +5,6 @@ import android.util.Log
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.doublePreferencesKey
 import androidx.datastore.preferences.core.edit
-import androidx.datastore.preferences.core.emptyPreferences
 import androidx.datastore.preferences.core.floatPreferencesKey
 import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.longPreferencesKey
@@ -14,7 +13,6 @@ import androidx.datastore.preferences.core.stringSetPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.runBlocking
@@ -29,7 +27,7 @@ import kotlinx.coroutines.withContext
  * @init 初始化：本工具类无需初始化，导入依赖即用： implementation("androidx.datastore:datastore-preferences:1.0.0")
  *
  */
-data class DataStoreManager(
+class DataStoreManager(
     private val context: Context, private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 ) {
 
@@ -65,7 +63,7 @@ data class DataStoreManager(
      * @param key 保存的 key  @see [SP_KEY_MESSAGE]
      * @param value 保存的数据 (String, Set<String>, Int, Long, Float, Double, Boolean)
      */
-    suspend fun <T> save(key: String, value: T) {
+    suspend fun <T : Any> save(key: String, value: T) {
         Log.v(TAG, "save: Storing locally: $key=$value")
         withContext(ioDispatcher) {
             dataStore.edit { preferences ->
@@ -89,26 +87,23 @@ data class DataStoreManager(
      * @param key 读取的 key  @see [SP_KEY_MESSAGE]
      * @param defaultValue 默认值 (String, Set<String>, Int, Long, Float, Double, Boolean)
      */
-    @Suppress("IMPLICIT_CAST_TO_ANY", "UNCHECKED_CAST")
-    fun <T> retrieve(key: String, defaultValue: T): T {
+    @Suppress("UNCHECKED_CAST")
+    fun <T : Any> retrieve(key: String, defaultValue: T): T {
         Log.v(TAG, "retrieve: Reading local cache: $key")
         return runBlocking {
-            dataStore.data.catch {
-                Log.w(TAG, it)
-                emit(emptyPreferences())
-            }.map { preferences ->
+            dataStore.data.map { preferences ->
                 when (defaultValue) {
-                    is String -> preferences[stringPreferencesKey(key)] ?: defaultValue
-                    is Set<*> -> preferences[stringSetPreferencesKey(key)] ?: defaultValue
-                    is Int -> preferences[intPreferencesKey(key)] ?: defaultValue
-                    is Long -> preferences[longPreferencesKey(key)] ?: defaultValue
-                    is Float -> preferences[floatPreferencesKey(key)] ?: defaultValue
-                    is Double -> preferences[doublePreferencesKey(key)] ?: defaultValue
-                    is Boolean -> preferences[booleanPreferencesKey(key)] ?: defaultValue
+                    is String -> preferences[stringPreferencesKey(key)]
+                    is Set<*> -> preferences[stringSetPreferencesKey(key)]
+                    is Int -> preferences[intPreferencesKey(key)]
+                    is Long -> preferences[longPreferencesKey(key)]
+                    is Float -> preferences[floatPreferencesKey(key)]
+                    is Double -> preferences[doublePreferencesKey(key)]
+                    is Boolean -> preferences[booleanPreferencesKey(key)]
                     else -> throw IllegalArgumentException("Unsupported type")
-                } as T
-            }.first()
-        }
+                }
+            }.first() ?: defaultValue
+        } as T
     }
 
     /**

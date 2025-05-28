@@ -3,6 +3,8 @@ plugins {
     alias(libs.plugins.jetbrains.kotlin.android)
 }
 
+group = "com.kekemao00.protonkit.base"
+
 android {
     namespace = "me.kekemao.base"
     compileSdk = 34

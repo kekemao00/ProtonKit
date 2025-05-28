@@ -1,14 +1,16 @@
 package me.kekemao.protonkit
 
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Button
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -17,9 +19,10 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
-import kotlinx.coroutines.runBlocking
+import getBuildInfo
 import me.kekemao.base_compose.modifier.debouncedClickable
 import me.kekemao.keyvaluestore.DataStoreManager
 import me.kekemao.keyvaluestore.DataStoreManager.Companion.SP_KEY_MESSAGE
@@ -29,6 +32,11 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        val buildInfo = getBuildInfo()
+        for ((key, value) in buildInfo) {
+            Log.i("TAG", "$key : $value")
+        }
+
         setContent {
             ProtonKitTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
@@ -53,8 +61,8 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
 
     LaunchedEffect(Unit) {
         dataStore = DataStoreManager(context)
-        dataStore?.save(SP_KEY_MESSAGE, "Hello, DataStoreManager${System.currentTimeMillis()}")
-        msg.value = runBlocking { dataStore?.retrieve(SP_KEY_MESSAGE, "NULL")?:"NULL" }
+        dataStore!!.save(SP_KEY_MESSAGE, "Hello, DataStoreManager${System.currentTimeMillis()}")
+        msg.value = dataStore!!.retrieve(SP_KEY_MESSAGE, "SSS")
     }
 
     Column {
@@ -63,12 +71,20 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
             text = "${msg.value}!", modifier = modifier
         )
 
-        Button(onClick = { ++num.intValue }, Modifier.debouncedClickable {
-            ++num1.intValue
-            Toast.makeText(
-                context, "Button clicked", Toast.LENGTH_SHORT
-            ).show()
-        }) {
+        Row(Modifier
+            .pointerInput(Unit) {
+                detectTapGestures {
+
+                }
+            }
+            .debouncedClickable {
+                ++num1.intValue
+                Toast
+                    .makeText(
+                        context, "Button clicked", Toast.LENGTH_SHORT
+                    )
+                    .show()
+            }) {
             Text("Click Me ${num1.intValue}, ${num.intValue}")
         }
 
