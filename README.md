@@ -8,7 +8,7 @@
 
 ## TODO
 
-- [ ] 整理 base, common, network, ui, util, widget,key-value-vault 等模块, 并发布到 jitpack
+- [ ] 整理 base, common, network, ui, util, widget,key-value-vault 等模块, 并发布到 jitpack 仓库
 
 
 ### 使用 JitPack
