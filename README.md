@@ -21,16 +21,16 @@
 
     - 在库模块的 `build.gradle` 文件中添加 JitPack 发布插件和相关配置：
 
-      ```
-      groovy复制代码apply plugin: 'com.github.dcendents.android-maven'
+      ```groovy
+      apply plugin: 'com.github.dcendents.android-maven'
       group = 'com.github.YourUsername'
       version = '1.0.0'
       ```
 
     - 在项目的根目录下的 `build.gradle` 文件中添加 JitPack 插件依赖：
 
-      ```
-      groovy复制代码buildscript {
+      ```groovy
+      buildscript {
           repositories {
               google()
               mavenCentral()
@@ -46,8 +46,8 @@
 
     - 创建一个标签并推送到 GitHub：
 
-      ```
-      sh复制代码git tag -a v1.0.0 -m "Release version 1.0.0"
+      ```sh
+      git tag -a v1.0.0 -m "Release version 1.0.0"
       git push origin v1.0.0
       ```
 
@@ -59,16 +59,10 @@
 
 5. **在应用程序中引用库**：
 
-    - 在你的应用程序的
+    - 在你的应用程序的`build.gradle`文件中添加 JitPack 仓库和你的库依赖：
 
-      ```
-      build.gradle
-      ```
-
-      文件中添加 JitPack 仓库和你的库依赖：
-
-      ```
-      groovy复制代码repositories {
+      ```groovy
+      repositories {
           google()
           mavenCentral()
           maven { url 'https://jitpack.io' }
@@ -95,15 +89,15 @@
 
 1. **应用插件**：
 
-   ```
-   groovy复制代码apply plugin: 'com.android.library'
+   ```groovy
+   apply plugin: 'com.android.library'
    apply plugin: 'com.github.dcendents.android-maven'
    ```
 
 2. **配置 Android 构建参数**：
 
-   ```
-   groovy复制代码android {
+   ```groovy
+   android {
        compileSdkVersion 30
        defaultConfig {
            minSdkVersion 16
@@ -122,8 +116,8 @@
 
 3. **添加 JitPack 配置**：
 
-   ```
-   groovy复制代码group = 'com.github.YourUsername'  // 替换为你的 GitHub 用户名
+   ```groovy
+   group = 'com.github.YourUsername'  // 替换为你的 GitHub 用户名
    version = '1.0.0'  // 库的版本号
    
    dependencies {
@@ -138,8 +132,8 @@
 
 在项目根目录下的 `build.gradle` 文件中添加 JitPack 插件依赖：
 
-```
-groovy复制代码buildscript {
+```groovy
+buildscript {
     repositories {
         google()
         mavenCentral()
@@ -163,8 +157,8 @@ allprojects {
 
 为你的项目创建一个 Git 标签，然后推送到 GitHub：
 
-```
-sh复制代码git tag -a v1.0.0 -m "Release version 1.0.0"
+```sh
+git tag -a v1.0.0 -m "Release version 1.0.0"
 git push origin v1.0.0
 ```
 
@@ -178,8 +172,8 @@ git push origin v1.0.0
 
 在其他项目的 `build.gradle` 文件中添加 JitPack 仓库和你的库依赖：
 
-```
-groovy复制代码repositories {
+```groovy
+repositories {
     google()
     mavenCentral()
     maven { url 'https://jitpack.io' }
@@ -194,8 +188,8 @@ dependencies {
 
 为了更好地理解，以下是一个示例项目结构：
 
-```
-bash复制代码YourRepository/
+```bash
+YourRepository/
 ├── yourlibrary/            # 库模块
 │   ├── src/
 │   ├── build.gradle        # 库模块的 build.gradle 文件
